@@ -1,10 +1,9 @@
 <?php
 //CODE BY Maurycy Kaczmarek
-
-//insert your API KEY from openweathermap.org here:
 $PHP_weather_apikey = trim(file_get_contents('weather_api_key.txt'));
 
 define("weather_apikey", "$PHP_weather_apikey");
+//!!!YOU CAN CHANGE UNITS HERE!!!
 //define which units you want use: 'metric' (kilometers, celcius...) or 'imperial' (miles, fahrenheit...) 
 define("weather_unit", 'metric');
 
