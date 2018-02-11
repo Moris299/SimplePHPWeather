@@ -1,7 +1,7 @@
 # PHPsimpleWeather  
 The simplest way to get current the weather in PHP    
 Weather data from OpenWeatherMap.org API.     
-Script writen in OOP.     
+Script writen in OOP PHP.     
 
 ## About this script
 
