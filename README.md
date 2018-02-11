@@ -34,7 +34,7 @@ require_once('weather_script.php');
    
 Now in whole page (below require line) you can call any Weather functions (list below).    
   
-Example, for overall weather info in Paris:   
+Example - overall weather info in Paris:   
 ```   
 <?php   
 $paris = new city('Paris');   
@@ -47,7 +47,7 @@ will output:
 Current weather in Paris: 2°C, few clouds   
 ```
    
-Get temperature example (it will return INT value)   
+Example - Get temperature example
 ```   
 <?php   
 $london = new city('London');   
