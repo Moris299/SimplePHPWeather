@@ -13,12 +13,12 @@ This script using OpenWeatherMap.org API. Its totally free if script making no m
 
 You have to:    
      
-1.Create free account on [openweathermap.org](https://home.openweathermap.org/users/sign_up)      
-2.get free api key [here](https://home.openweathermap.org/api_keys)      
-3.copy key, open weather_api_key.txt file and paste key, save file      
+1. Create free account on [openweathermap.org](https://home.openweathermap.org/users/sign_up)      
+2. Get free api key [here](https://home.openweathermap.org/api_keys)      
+3. Copy key, open weather_api_key.txt file and paste key, save file      
 ![copy this](https://i.imgur.com/c3GcWbJ.png)       
    
-4.Upload all files to your hosting, into public_html folder.  
+4. Upload all files to your hosting, into public_html folder.  
    
 ### How to use? Exapmles and explanation.
    
