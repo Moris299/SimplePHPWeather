@@ -11,8 +11,8 @@ class city {
 	private $url;
 	private $city_name;
 	private $xml_data;
-    private $weather_in_english;
-    private $translation;
+	private $weather_in_english;
+	private $translation;
 
 	public function __construct($city_name) {
 		$this->city_name = $city_name;
