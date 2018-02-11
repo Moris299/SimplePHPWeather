@@ -64,37 +64,37 @@ will output:
 
 get_temperature() - return current temperature in celcius or fahreinheit   
 get_humidity() - return current humidity in %    
-get_pressure() - return current pressure in hPa    
-get_wind_speed() - return current wind speed in kph or mph   
-get_weather() - return icon (optional), cityname, temperature, and weather condition.    
+get_pressure() - return current pressure in hPa     
+get_wind_speed() - return current wind speed in kph or mph     
+get_weather() - return icon (optional), cityname, temperature, and weather condition.       
 
-All functions can return unit name after INT value. You have to only add parameter 'TRUE' when calling function:    
+All functions can return unit name after INT value. You have to only add parameter 'TRUE' when calling function:      
 ```
-$berlin = new city('Berlin');
-echo $berlin->get_temperature();
-//^ it will return "2"
-echo $berlin->get_temperature(TRUE);
-//^ but it will return "2°C"
+$berlin = new city('Berlin');   
+echo $berlin->get_temperature();  
+//^ it will return "2"  
+echo $berlin->get_temperature(TRUE);  
+//^ but it will return "2°C"  
 ```
 ```
-$NY = new city('New York');
-echo $NY->get_pressure();
-//^ it will return "1011"
-echo $NY->get_pressure(TRUE);
-//^ but it will return "1011hPa"
-```
+$NY = new city('New York');  
+echo $NY->get_pressure();  
+//^ it will return "1011"  
+echo $NY->get_pressure(TRUE);  
+//^ but it will return "1011hPa"  
+```   
 
-## Version
-
-Current script version: 0.1 
-TODO:
--more functions
--better icons images 
-
-## Authors
-
-* **Maurycy Kaczmarek**
-
-## License
-
-Totally free to use and edit. Just remember about OpenWeatherMap max 60 calls to API per minute. 
+## Version  
+   
+Current script version: 0.1   
+TODO:  
+-more functions  
+-better icons images    
+   
+## Authors   
+   
+* **Maurycy Kaczmarek**    
+    
+## License   
+    
+Totally free to use and edit. Just remember about OpenWeatherMap max 60 calls to API per minute.  
