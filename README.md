@@ -7,7 +7,7 @@ Script writen in OOP PHP.
 
 Do you want to display temperature on your site? Or maybe any other weather info, like wind speed, pressure, humidity etc?   
 This script has been created to make it as simpy as is it posibble.   
-This script using OpenWeatherMap.org API. Its totally free if script making no more than 60 calls per minute - on small sites you   propablly never exceed the limit.     
+This script using OpenWeatherMap.org API. If script is making LESS than 60 calls per minute it's totatally FREE. On small sites you   propablly never exceed this limit.     
 
 ### Prerequisites and installing
 
