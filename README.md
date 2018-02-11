@@ -23,7 +23,7 @@ You have to:
 ### How to use? Exapmles and explanation.
    
 If you have already uploaded all files to your hosting you can now use this script.    
-In file where you want to get weather, for example index.php enter at beginning of your code add:    
+In file where you want to get weather, for example index.php at beginning of your code add:    
    
    
 ```   
