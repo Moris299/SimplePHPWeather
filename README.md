@@ -28,7 +28,7 @@ In file where you want to get weather, for example index.php at beginning of you
    
 ```   
 <?php   
-require_once('weather_script.php');   
+require_once('CityWeatherLoader.php');   
 ?>   
 ```
    
