@@ -1,13 +1,14 @@
 <?php
 //CODE BY Maurycy Kaczmarek
-$PHP_weather_apikey = trim(file_get_contents('weather_api_key.txt'));
+
+//API KEY from openweathermap.org here:
+$PHP_weather_apikey = API_KEY_HERE;
 
 define("weather_apikey", "$PHP_weather_apikey");
-//!!!YOU CAN CHANGE UNITS HERE!!!
 //define which units you want use: 'metric' (kilometers, celcius...) or 'imperial' (miles, fahrenheit...) 
 define("weather_unit", 'metric');
 
-class city {
+class CityWeatherLoader {
 	private $url;
 	private $city_name;
 	private $xml_data;
@@ -24,17 +25,17 @@ class city {
         //if you want to add translation you can do it here (delete /* and */), example translation below is in Polish
         /*
         $this->translation = array(
-            'clear sky' => 'bezchmurnie',
-			'scattered clouds' => 'pochmurnie', 
-			'broken clouds' => 'pochmurnie', 
-			'light rain' => 'lekki deszcz', 
-			'few clouds' => 'niewielkie zachmurzenie', 
-			'rain' => 'opady deszczu',
-			'light snow' => 'niewielki opad śniegu',
-			'overcast clouds' => 'pochmurnie',
-			'light shower snow' => 'niewielki opad śniegu', 
-            'mist' => 'mgła',
-            'thunderstorm' => 'burza'
+        	'clear sky' => 'bezchmurnie',
+		'scattered clouds' => 'pochmurnie', 
+		'broken clouds' => 'pochmurnie', 
+		'light rain' => 'lekki deszcz', 
+		'few clouds' => 'niewielkie zachmurzenie', 
+		'rain' => 'opady deszczu',
+		'light snow' => 'niewielki opad śniegu',
+		'overcast clouds' => 'pochmurnie',
+		'light shower snow' => 'niewielki opad śniegu', 
+         	'mist' => 'mgła',
+         	'thunderstorm' => 'burza'
         );
         */
 	}
