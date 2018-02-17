@@ -88,7 +88,7 @@ echo $NY->get_pressure(true);
 
 ## Version  
    
-Current version: 0.2   
+Current version: 0.2.1  
 TODO:  
 -more functions  
 -better icons images    
