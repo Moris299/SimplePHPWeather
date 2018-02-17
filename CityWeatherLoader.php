@@ -40,7 +40,7 @@ class CityWeatherLoader {
         */
 	}
 	
-    public function get_temperature($disp = FALSE) {
+    public function get_temperature($disp = false) {
         $return_string = round($this->xml_data->temperature['value']);
         
         if($disp) {
@@ -53,7 +53,7 @@ class CityWeatherLoader {
         return $return_string;
     }
     
-    public function get_humidity($disp = FALSE) {
+    public function get_humidity($disp = false) {
         $return_string = $this->xml_data->humidity['value'];
         
         if($disp) {
@@ -63,7 +63,7 @@ class CityWeatherLoader {
         return $return_string;
     }
     
-    public function get_pressure($disp = FALSE) {
+    public function get_pressure($disp = false) {
         $return_string = $this->xml_data->pressure['value'];
         
         if($disp) {
@@ -73,7 +73,7 @@ class CityWeatherLoader {
         return $return_string;
     }
     
-    public function get_wind_speed($disp = FALSE) {
+    public function get_wind_speed($disp = false) {
         $wind_speed = $this->xml_data->wind->speed['value'];
         if(weather_unit == 'metric') {
             $return_string = $wind_speed * 3.6;
@@ -92,7 +92,7 @@ class CityWeatherLoader {
          return $return_string;
     }
     
-	public function get_weather($disp = FALSE) {
+	public function get_weather($disp = false) {
         if($disp) {
             $return_string = '<img style="float: left; height: 20px;" src="weather_img/' . $this->xml_data->weather['icon'] . '.png" />';
         }
