@@ -15,8 +15,9 @@ You have to:
      
 1. Create free account on [openweathermap.org](https://home.openweathermap.org/users/sign_up)      
 2. Get free api key [here](https://home.openweathermap.org/api_keys)      
-3. Copy key, open weather_api_key.txt file and paste key, save file      
-![copy this](https://i.imgur.com/c3GcWbJ.png)       
+3. Copy key, open WeatherCityLoader.php and put your key at 5 line of code: 
+( define("weather_apikey", "$PHP_weather_apikey");) 
+![copy this](https://i.imgur.com/c3GcWbJ.png)       
    
 4. Upload all files to your hosting, into public_html folder.  
    
