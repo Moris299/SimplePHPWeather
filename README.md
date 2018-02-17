@@ -70,19 +70,19 @@ get_wind_speed() - return current wind speed in kph or mph
 get_weather() - return icon (optional), cityname, temperature, and weather condition.       
 
 
-All functions can return unit name after INT value. You have to only add parameter 'TRUE' when calling function:      
+All functions can return unit name after INT value. You have to only add parameter 'true' when calling function:      
 ```
 $berlin = new CityWeatherLoader('Berlin');   
 echo $berlin->get_temperature();  
 //^ it will return "2"  
-echo $berlin->get_temperature(TRUE);  
+echo $berlin->get_temperature(true);  
 //^ but it will return "2°C"  
 ```
 ```
 $NY = new CityWeatherLoader('New York');  
 echo $NY->get_pressure();  
 //^ it will return "1011"  
-echo $NY->get_pressure(TRUE);  
+echo $NY->get_pressure(true);  
 //^ but it will return "1011hPa"  
 ```   
 
