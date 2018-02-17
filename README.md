@@ -38,7 +38,7 @@ Now in whole page (below require line) you can call any Weather functions (list 
 Example - overall weather info in Paris:   
 ```   
 <?php   
-$paris = new city('Paris');   
+$paris = new CityWeatherLoader('Paris');   
 echo 'Current weather in ' . $paris->get_weather();   
 ?>   
 ```  
@@ -48,10 +48,10 @@ will output:
 Current weather in Paris: 2°C, few clouds   
 ```
    
-Example - Get temperature example
+Example - Get temperature 
 ```   
 <?php   
-$london = new city('London');   
+$london = new CityWeatherLoader('London');   
 echo $london->get_temperature();  
 ?>   
 ```   
@@ -69,16 +69,17 @@ get_pressure() - return current pressure in hPa
 get_wind_speed() - return current wind speed in kph or mph     
 get_weather() - return icon (optional), cityname, temperature, and weather condition.       
 
+
 All functions can return unit name after INT value. You have to only add parameter 'TRUE' when calling function:      
 ```
-$berlin = new city('Berlin');   
+$berlin = new CityWeatherLoader('Berlin');   
 echo $berlin->get_temperature();  
 //^ it will return "2"  
 echo $berlin->get_temperature(TRUE);  
 //^ but it will return "2°C"  
 ```
 ```
-$NY = new city('New York');  
+$NY = new CityWeatherLoader('New York');  
 echo $NY->get_pressure();  
 //^ it will return "1011"  
 echo $NY->get_pressure(TRUE);  
@@ -87,7 +88,7 @@ echo $NY->get_pressure(TRUE);
 
 ## Version  
    
-Current script version: 0.1   
+Current version: 0.2   
 TODO:  
 -more functions  
 -better icons images    
