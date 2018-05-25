@@ -10,13 +10,13 @@ define("weather_unit", 'metric');
 
 class CityWeatherLoader {
 	private $url;
-	private $city_name;
-	private $xml_data;
-	private $weather_in_english;
+	private $cityName;
+	private $xmlData;
+	private $weatherInEnglish;
 	private $translation;
 
-	public function __construct($city_name) {
-		$this->city_name = $city_name;
+	public function __construct($cityName) {
+		$this->city_name = $cityName;
 		$this->url  = 'http://api.openweathermap.org/data/2.5/weather?appid=' . weather_apikey . '&units=' . weather_unit . '&mode=xml&q=' . $this->city_name;
         
 		//get xml with weather data
@@ -25,15 +25,15 @@ class CityWeatherLoader {
         //if you want to add translation you can do it here (delete /* and */), example translation below is in Polish
         /*
         $this->translation = array(
-        	'clear sky' => 'bezchmurnie',
-		'scattered clouds' => 'pochmurnie', 
-		'broken clouds' => 'pochmurnie', 
-		'light rain' => 'lekki deszcz', 
-		'few clouds' => 'niewielkie zachmurzenie', 
-		'rain' => 'opady deszczu',
-		'light snow' => 'niewielki opad śniegu',
-		'overcast clouds' => 'pochmurnie',
-		'light shower snow' => 'niewielki opad śniegu', 
+            'clear sky' => 'bezchmurnie',
+            'scattered clouds' => 'pochmurnie', 
+            'broken clouds' => 'pochmurnie', 
+            'light rain' => 'lekki deszcz', 
+            'few clouds' => 'niewielkie zachmurzenie', 
+            'rain' => 'opady deszczu',
+            'light snow' => 'niewielki opad śniegu',
+            'overcast clouds' => 'pochmurnie',
+            'light shower snow' => 'niewielki opad śniegu', 
          	'mist' => 'mgła',
          	'thunderstorm' => 'burza'
         );
@@ -102,14 +102,14 @@ class CityWeatherLoader {
 		$return_string .= $this->get_temperature(TRUE) . ', ';
          
 		//get overall weather info in english
-		$weather_in_english = (string)$this->xml_data->weather['value'];
+		$weatherInEnglish = (string)$this->xml_data->weather['value'];
 		//translate into polish
 			
-		if(empty($this->translation["$weather_in_english"])) {
-			$return_string .= $weather_in_english;
+		if(empty($this->translation["$weatherInEnglish"])) {
+			$return_string .= $weatherInEnglish;
 			//echo 'empty';
 		} else {
-			$return_string .= $this->translation["$weather_in_english"]; 
+			$return_string .= $this->translation["$weatherInEnglish"]; 
 			//echo 'not empty';
 		}
 		return $return_string;
