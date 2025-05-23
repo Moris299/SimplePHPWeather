@@ -80,18 +80,3 @@ Klasa automatycznie obsługuje:
 ## Licencja
 
 Projekt dostępny na licencji MIT.
-
----
-
-Jeśli chcesz dodać sekcję kontaktową, przykładowy nagłówek:
-
-## Kontakt
-
-W przypadku pytań lub sugestii, proszę pisać na [Twój e-mail lub GitHub Issues].
-
----
-
-Daj znać, jeśli chcesz dodać lub zmienić coś jeszcze!
-
----
-Odpowiedź od Perplexity: pplx.ai/share
