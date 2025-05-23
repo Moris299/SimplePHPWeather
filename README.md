@@ -1,7 +1,3 @@
-Oczywiście! Oto poprawiona wersja pliku README.md z odpowiednim formatowaniem Markdown do publikacji na GitHubie:
-
----
-
 # SimplePHPWeather
 
 Prosta klasa PHP do pobierania danych pogodowych z API OpenWeatherMap. Automatycznie tłumaczy opisy pogody z angielskiego na polski.
