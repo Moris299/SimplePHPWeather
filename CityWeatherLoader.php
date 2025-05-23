@@ -4,6 +4,7 @@
 //You can check if everything works by using the test function at the bottom of the page.
 //Version: 2.0 (The previous versions did not work with PHP 8+)
 //API KEY from openweathermap.org here:
+
 $PHP_weather_apikey = 'YOUR_API_KEY';
 
 // Definicja klucza API dla OpenWeatherMap
