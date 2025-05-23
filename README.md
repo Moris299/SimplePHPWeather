@@ -93,9 +93,9 @@ Output:
 
 ## Available Methods
 
-$unit = true; //if you need 13°C as output
-or 
-$unit = false; //if you need 13 as output
+$unit = true; //if you need 13°C as output   
+or    
+$unit = false; //if you need 13 as output   
 
 | Method                      | Description                | Parameter                         |
 |-----------------------------|----------------------------|------------------------------------|
