@@ -1,39 +1,83 @@
 <?php
 
-//CODE BY Maurycy Kaczmarek
+//CODE BY Maurycy Kaczmarek. 
+//You can check if everything works by using the test function at the bottom of the page.
+//Version: 2.0 (The previous versions did not work with PHP 8+)
 //API KEY from openweathermap.org here:
-$PHP_weather_apikey = API_KEY_HERE;
+$PHP_weather_apikey = 'YOUR_API_KEY';
 
+// Definicja klucza API dla OpenWeatherMap
 define("weather_apikey", "$PHP_weather_apikey");
-//Define which units you want to use: 'Metric' (kilometres, Celsius...) or 'Imperial' (miles, Fahrenheit...).
+
+// Definicja jednostek: 'metric' (kilometry, Celsjusz...) lub 'imperial' (mile, Fahrenheit...)
 define("weather_unit", 'metric');
 
+/**
+ * Klasa do pobierania i wyświetlania danych pogodowych dla wybranego miasta
+ * Wykorzystuje API OpenWeatherMap - kompatybilna z PHP 8+
+ */
 class CityWeatherLoader {
 
-    private $url;
-    private $cityName;
-    private $xmlData;
-    private $weatherInEnglish;
-    private $translation;
+    private string $url;           // URL do API OpenWeatherMap
+    private string $cityName;      // Nazwa miasta
+    private SimpleXMLElement $xmlData; // Dane XML z API
+    private array $translation;    // Tablica z tłumaczeniami
 
-    public function __construct($cityName) {
-        $this->city_name = $cityName;
-        $this->url = 'http://api.openweathermap.org/data/2.5/weather?appid=' . weather_apikey . '&units=' . weather_unit . '&mode=xml&q=' . $this->city_name;
+    /**
+     * Konstruktor klasy - inicjalizuje połączenie z API i pobiera dane pogodowe
+     * @param string $cityName Nazwa miasta dla którego pobieramy pogodę
+     * @throws Exception Gdy nie można pobrać danych z API
+     */
+    public function __construct(string $cityName) {
+        $this->cityName = $cityName;
 
-        //get xml with weather data
-        $this->xml_data = new SimpleXMLElement(file_get_contents($this->url));
+// Sprawdź czy klucz API jest ustawiony
+        if (empty(weather_apikey) || weather_apikey === 'TUTAJ_WKLEJ_SWOJ_KLUCZ_API') {
+            throw new Exception("Klucz API nie został ustawiony! Wklej swój klucz z openweathermap.org");
+        }
 
-        // *** TRANSLATIONS *** :
-        //If you would like to add a translation, you can do so here by removing the comment marks (/* and */) – an example translation in Polish is provided below.
-	/*
+// Budowanie URL do API z odpowiednimi parametrami
+        $this->url = 'https://api.openweathermap.org/data/2.5/weather?appid=' . weather_apikey . '&units=' . weather_unit . '&mode=xml&q=' . urlencode($this->cityName);
+
+// Pobieranie danych XML z API pogodowego z obsługą błędów
+        $context = stream_context_create([
+            'http' => [
+                'timeout' => 10,
+                'method' => 'GET',
+                'header' => 'User-Agent: Mozilla/5.0',
+                'ignore_errors' => true
+            ]
+        ]);
+
+        $xmlContent = file_get_contents($this->url, false, $context);
+
+        if ($xmlContent === false) {
+            $error = error_get_last();
+            throw new Exception("Nie można połączyć się z API: " . ($error['message'] ?? 'Nieznany błąd'));
+        }
+
+// Sprawdź czy odpowiedź zawiera błąd API
+        if (strpos($xmlContent, '<message>') !== false || strpos($xmlContent, 'Invalid API key') !== false) {
+            throw new Exception("Błąd API - sprawdź klucz API lub nazwę miasta: " . $this->cityName);
+        }
+
+        try {
+            $this->xmlData = new SimpleXMLElement($xmlContent);
+        } catch (Exception $e) {
+            throw new Exception("Błąd parsowania danych XML: " . $e->getMessage());
+        }
+
+// *** SŁOWNIK TŁUMACZEŃ *** :
+// Tablica tłumaczeń opisów pogody z angielskiego na polski
         $this->translation = array(
+// Zachmurzenie
             'clear sky' => 'bezchmurne niebo',
             'few clouds' => 'niewielkie zachmurzenie',
             'scattered clouds' => 'rozproszone chmury',
             'broken clouds' => 'zachmurzenie umiarkowane',
             'overcast clouds' => 'całkowite zachmurzenie',
             // Opady deszczu
-            'light rain' => 'przelotny deszcz',
+            'light rain' => 'lekki deszcz',
             'moderate rain' => 'umiarkowany deszcz',
             'heavy intensity rain' => 'intensywny deszcz',
             'very heavy rain' => 'bardzo intensywny deszcz',
@@ -42,7 +86,7 @@ class CityWeatherLoader {
             'shower rain' => 'przelotny deszcz',
             'light intensity shower rain' => 'lekka przelotna mżawka',
             'heavy intensity shower rain' => 'intensywny przelotny deszcz',
-            'ragged shower rain' => 'nieregularne przelotne opady deszczu',
+            'ragged shower rain' => 'nieregularne przelotne opady',
             // Opady śniegu
             'light snow' => 'lekki śnieg',
             'snow' => 'śnieg',
@@ -89,80 +133,164 @@ class CityWeatherLoader {
             'hail' => 'grad'
         );
     }
-    */
-	
-    public function get_temperature($disp = false) {
-        $return_string = round($this->xml_data->temperature['value']);
 
-        if ($disp) {
+    /**
+     * Pobiera temperaturę (kompatybilne z PHP 8)
+     * @param bool $displayUnit Czy dodać jednostkę temperatury do wyniku
+     * @return string Temperatura (z jednostką jeśli $displayUnit = true)
+     */
+    public function getTemperature(bool $displayUnit = false): string {
+// Konwersja SimpleXMLElement na float przed zaokrągleniem (PHP 8 wymagana)
+        $temperatureValue = (float) $this->xmlData->temperature['value'];
+        $returnString = (string) round($temperatureValue);
+
+// Dodanie jednostki temperatury jeśli wymagane
+        if ($displayUnit) {
             if (weather_unit == 'imperial') {
-                $return_string .= '°F';
+                $returnString .= '°F';
             } elseif (weather_unit == 'metric') {
-                $return_string .= '°C';
+                $returnString .= '°C';
             }
         }
-        return $return_string;
+        return $returnString;
     }
 
-    public function get_humidity($disp = false) {
-        $return_string = $this->xml_data->humidity['value'];
+    /**
+     * Pobiera wilgotność powietrza (kompatybilne z PHP 8)
+     * @param bool $displayUnit Czy dodać znak % do wyniku
+     * @return string Wilgotność (z % jeśli $displayUnit = true)
+     */
+    public function getHumidity(bool $displayUnit = false): string {
+// Konwersja SimpleXMLElement na string (PHP 8)
+        $returnString = (string) $this->xmlData->humidity['value'];
 
-        if ($disp) {
-            $return_string .= '%';
+// Dodanie znaku % jeśli wymagane
+        if ($displayUnit) {
+            $returnString .= '%';
         }
 
-        return $return_string;
+        return $returnString;
     }
 
-    public function get_pressure($disp = false) {
-        $return_string = $this->xml_data->pressure['value'];
+    /**
+     * Pobiera ciśnienie atmosferyczne (kompatybilne z PHP 8)
+     * @param bool $displayUnit Czy dodać jednostkę hPa do wyniku
+     * @return string Ciśnienie (z hPa jeśli $displayUnit = true)
+     */
+    public function getPressure(bool $displayUnit = false): string {
+// Konwersja SimpleXMLElement na string (PHP 8)
+        $returnString = (string) $this->xmlData->pressure['value'];
 
-        if ($disp) {
-            $return_string .= 'hPa';
+// Dodanie jednostki ciśnienia jeśli wymagane
+        if ($displayUnit) {
+            $returnString .= ' hPa';
         }
 
-        return $return_string;
+        return $returnString;
     }
 
-    public function get_wind_speed($disp = false) {
-        $wind_speed = $this->xml_data->wind->speed['value'];
+    /**
+     * Pobiera prędkość wiatru (kompatybilne z PHP 8)
+     * @param bool $displayUnit Czy dodać jednostkę prędkości do wyniku
+     * @return string Prędkość wiatru (z jednostką jeśli $displayUnit = true)
+     */
+    public function getWindSpeed(bool $displayUnit = false): string {
+// Konwersja SimpleXMLElement na float (PHP 8)
+        $windSpeed = (float) $this->xmlData->wind->speed['value'];
+
+// Konwersja z m/s na km/h dla jednostek metrycznych
         if (weather_unit == 'metric') {
-            $return_string = $wind_speed * 3.6;
+            $returnString = (string) round($windSpeed * 3.6, 1);
         } else {
-            $return_string = $wind_speed;
+            $returnString = (string) $windSpeed;
         }
 
-        if ($disp) {
+// Dodanie jednostki prędkości jeśli wymagane
+        if ($displayUnit) {
             if (weather_unit == 'metric') {
-                $return_string .= 'kph';
+                $returnString .= ' km/h';
             } elseif (weather_unit == 'imperial') {
-                $return_string .= 'mph';
+                $returnString .= ' mph';
             }
         }
 
-        return $return_string;
+        return $returnString;
     }
 
-    public function get_weather($disp = false) {
-        if ($disp) {
-            $return_string = '<img style="float: left; height: 20px;" src="weather_img/' . $this->xml_data->weather['icon'] . '.png" />';
+    /**
+     * Pobiera kierunek wiatru (opcjonalnie)
+     * @return string Kierunek wiatru w stopniach
+     */
+    public function getWindDirection(): string {
+        return isset($this->xmlData->wind->direction['value']) ? (string) $this->xmlData->wind->direction['value'] . '°' : 'brak danych';
+    }
+
+    /**
+     * Pobiera pełny opis pogody z ikoną (opcjonalnie) - kompatybilne z PHP 8
+     * @param bool $displayIcon Czy wyświetlić ikonę pogody
+     * @return string Pełny opis pogody dla miasta
+     */
+    public function getWeather(bool $displayIcon = false): string {
+        $returnString = '';
+
+// Dodanie ikony pogody jeśli wymagane
+        if ($displayIcon) {
+            $iconCode = (string) $this->xmlData->weather['icon'];
+            $returnString = '<img style="float: left; height: 20px; margin-right: 5px;" src="https://openweathermap.org/img/w/' . $iconCode . '.png" alt="Ikona pogody" />';
         }
-        //return city name
-        $return_string .= $this->city_name . ': ';
 
-        $return_string .= $this->get_temperature(TRUE) . ', ';
+// Dodanie nazwy miasta
+        $returnString .= $this->cityName . ': ';
 
-        //get overall weather info in english
-        $weatherInEnglish = (string) $this->xml_data->weather['value'];
-        //translate into polish
+// Dodanie temperatury z jednostką
+        $returnString .= $this->getTemperature(true) . ', ';
 
-        if (empty($this->translation["$weatherInEnglish"])) {
-            $return_string .= $weatherInEnglish;
-            //echo 'empty';
+// Pobranie opisu pogody w języku angielskim (konwersja dla PHP 8)
+        $weatherInEnglish = (string) $this->xmlData->weather['value'];
+
+// Tłumaczenie na język polski jeśli dostępne
+        if (empty($this->translation[$weatherInEnglish])) {
+// Jeśli brak tłumaczenia, używamy angielskiego opisu
+            $returnString .= $weatherInEnglish;
         } else {
-            $return_string .= $this->translation["$weatherInEnglish"];
-            //echo 'not empty';
+// Używamy polskiego tłumaczenia
+            $returnString .= $this->translation[$weatherInEnglish];
         }
-        return $return_string;
+
+        return $returnString;
+    }
+
+    /**
+     * Pobiera szczegółowe informacje pogodowe
+     * @return array Tablica ze wszystkimi danymi pogodowymi
+     */
+    public function getDetailedWeather(): array {
+        return [
+            'city' => $this->cityName,
+            'temperature' => $this->getTemperature(true),
+            'humidity' => $this->getHumidity(true),
+            'pressure' => $this->getPressure(true),
+            'wind_speed' => $this->getWindSpeed(true),
+            'wind_direction' => $this->getWindDirection(),
+            'description' => (string) $this->xmlData->weather['value'],
+            'descriptionTranslated' => $this->translation[(string) $this->xmlData->weather['value']] ?? (string) $this->xmlData->weather['value']
+        ];
     }
 }
+
+// *** TEST FUNCTION - COMMENT OUT BEFORE PRODUCTION DEPLOYMENT ***
+// Example call to check weather for Warsaw]\
+/*
+echo 'Weather for London';
+$weather = new CityWeatherLoader('London');
+echo "Temperature: " . $weather->getTemperature(true) . '<br>';
+echo "Humidity: " . $weather->getHumidity(true) . '<br>';
+echo "Pressure: " . $weather->getPressure(true) . '<br>';
+echo "Wind: " . $weather->getWindSpeed(true) . " at " . $weather->getWindDirection() . '<br><hr>';
+echo "Description: " . $weather->getWeather(true) . '<br>';
+
+// Get all data as array
+$allData = $weather->getDetailedWeather();
+print_r($allData);
+ */
+?>
