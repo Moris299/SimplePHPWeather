@@ -1,102 +1,166 @@
-# PHPsimpleWeather  
-The simplest way to get current weather in PHP    
-Weather data from OpenWeatherMap.org API.     
-Script writen in OOP PHP.     
+# SimplePHPWeather
 
-## About this script
+A simple PHP class for fetching and displaying weather data using OpenWeatherMap API.
 
-Do you want to display temperature on your site? Or maybe any other weather info, like wind speed, pressure, humidity etc?   
-This script has been created to make it as simpy as is it posibble.   
-This script using OpenWeatherMap.org API. If script is making LESS than 60 calls per minute it's totatally FREE. On small sites you   propablly never exceed this limit.     
+## Features
 
-### Prerequisites and installing
+- Fetch current weather data for any city worldwide
+- Support for both metric and imperial units
+- Weather description translation from English to Polish
+- Compatible with PHP 8+
+- Comprehensive error handling
+- XML-based data retrieval
+- Multiple data points: temperature, humidity, pressure, wind speed/direction
 
-You have to:    
-     
-1. Create free account on [openweathermap.org](https://home.openweathermap.org/users/sign_up)      
-2. Get free api key [here](https://home.openweathermap.org/api_keys)      
-3. Copy key, open WeatherCityLoader.php and put your key at 5 line of code: 
-( define("weather_apikey", "$PHP_weather_apikey");) 
-![copy this](https://i.imgur.com/c3GcWbJ.png)       
-   
-4. Upload all files to your hosting, into public_html folder.  
-   
-### How to use? Exapmles and explanation.
-   
-If you have already uploaded all files to your hosting you can now use this script.    
-In file where you want to get weather, for example index.php at beginning of your code add:    
-   
-   
-```   
-<?php   
-require_once('CityWeatherLoader.php');   
-?>   
+## Requirements
+
+- PHP 8.0 or higher
+- SimpleXML extension (usually included with PHP)
+- Internet connection
+- OpenWeatherMap API key (free registration at [openweathermap.org](https://openweathermap.org/api))
+
+## Installation
+
+1. Download or clone the repository
+2. Include the class file in your project
+3. Get your free API key from [OpenWeatherMap](https://openweathermap.org/api)
+
+## Configuration
+
+1. Replace the API key in the code:
+```php
+$PHP_weather_apikey = 'YOUR_API_KEY_HERE';
 ```
-   
-Now in whole page (below require line) you can call any Weather functions (list below).    
-  
-Example - overall weather info in Paris:   
-```   
-<?php   
-$paris = new CityWeatherLoader('Paris');   
-echo 'Current weather in ' . $paris->get_weather();   
-?>   
-```  
+
+2. Set your preferred units:
+```php
+define("weather_unit", 'metric'); // or 'imperial'
+```
+
+## Usage
+
+### Basic Example
+
+```php
+getWeather(true);
     
-will output:   
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+}
+?>
 ```
-Current weather in Paris: 2°C, few clouds   
-```
-   
-Example - Get temperature 
-```   
-<?php   
-$london = new CityWeatherLoader('London');   
-echo $london->get_temperature();  
-?>   
-```   
-   
-will output:  
-```  
-1   
-```   
 
-## All funtions   
+### Available Methods
 
-get_temperature() - return current temperature in celcius or fahreinheit   
-get_humidity() - return current humidity in %    
-get_pressure() - return current pressure in hPa     
-get_wind_speed() - return current wind speed in kph or mph     
-get_weather() - return icon (optional), cityname, temperature, and weather condition.       
+#### `getTemperature(bool $displayUnit = false): string`
+Returns current temperature, optionally with unit (°C or °F).
 
+#### `getHumidity(bool $displayUnit = false): string`
+Returns humidity percentage, optionally with % symbol.
 
-All functions can return unit name after INT value. You have to only add parameter 'true' when calling function:      
-```
-$berlin = new CityWeatherLoader('Berlin');   
-echo $berlin->get_temperature();  
-//^ it will return "2"  
-echo $berlin->get_temperature(true);  
-//^ but it will return "2°C"  
-```
-```
-$NY = new CityWeatherLoader('New York');  
-echo $NY->get_pressure();  
-//^ it will return "1011"  
-echo $NY->get_pressure(true);  
-//^ but it will return "1011hPa"  
-```   
+#### `getPressure(bool $displayUnit = false): string`
+Returns atmospheric pressure, optionally with hPa unit.
 
-## Version  
-   
-Current version: 0.2.1  
-TODO:  
--more functions  
--better icons images    
-   
-## Authors   
-   
-* **Maurycy Kaczmarek**    
+#### `getWindSpeed(bool $displayUnit = false): string`
+Returns wind speed, optionally with unit (km/h or mph).
+
+#### `getWindDirection(): string`
+Returns wind direction in degrees.
+
+#### `getWeather(bool $displayIcon = false): string`
+Returns complete weather description with optional weather icon.
+
+#### `getDetailedWeather(): array`
+Returns all weather data as an associative array.
+
+### Complete Example
+
+```php
+Weather for London";
+    echo "Temperature: " . $weather->getTemperature(true) . "";
+    echo "Humidity: " . $weather->getHumidity(true) . "";
+    echo "Pressure: " . $weather->getPressure(true) . "";
+    echo "Wind: " . $weather->getWindSpeed(true) . " at " . $weather->getWindDirection() . "";
+    echo "Description: " . $weather->getWeather(true) . "";
     
-## License   
+    // Get all data as array
+    $allData = $weather->getDetailedWeather();
+    print_r($allData);
     
-Totally free to use and edit. Just remember about OpenWeatherMap max 60 calls to API per minute.  
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+}
+?>
+```
+
+## Units
+
+- **Metric**: Celsius (°C), kilometers per hour (km/h), hectopascals (hPa)
+- **Imperial**: Fahrenheit (°F), miles per hour (mph), hectopascals (hPa)
+
+## Weather Translations
+
+The class includes comprehensive Polish translations for weather descriptions:
+- Clear sky conditions
+- Cloud coverage variations
+- Rain intensities (light, moderate, heavy, extreme)
+- Snow conditions
+- Thunderstorms
+- Drizzle variations
+- Fog and atmospheric phenomena
+- Extreme weather conditions
+
+## Error Handling
+
+The class handles various error conditions:
+- Missing or invalid API key
+- Network connectivity issues
+- Invalid city names
+- API rate limiting
+- XML parsing errors
+
+## Troubleshooting
+
+If you encounter errors, check:
+1. **API Key**: Ensure your OpenWeatherMap API key is valid and active
+2. **Internet Connection**: Verify you have a working internet connection
+3. **City Name**: Check that the city name is spelled correctly
+4. **PHP Version**: Ensure you're running PHP 8.0 or higher
+5. **Extensions**: Verify SimpleXML extension is enabled
+
+## API Rate Limits
+
+Free OpenWeatherMap accounts have the following limits:
+- 1,000 API calls per day
+- 60 calls per minute
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is open source. Please check the license file for details.
+
+## Support
+
+For issues related to:
+- **Code bugs**: Open an issue on GitHub
+- **API problems**: Check [OpenWeatherMap documentation](https://openweathermap.org/api)
+- **General questions**: Create a discussion on GitHub
+
+## Credits
+
+- Weather data provided by [OpenWeatherMap](https://openweathermap.org/)
+- Code by xyz
+
+---
+
+**Note**: Remember to remove or comment out the test function before deploying to production.
+
+---
+Odpowiedź od Perplexity: pplx.ai/share
